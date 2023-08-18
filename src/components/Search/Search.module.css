@@ -1,0 +1,30 @@
+.searchContainer {
+    margin: 0 35px 0 auto;
+    display: flex;
+    align-items: center;
+    width: 500px;
+    height: 40px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    padding: 12px 12px 12px 35px;
+    border: 2px solid rgba(0,0,0, 0.6);
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+}
+
+.lupa {
+    opacity: 0.6;
+    content: '';
+    z-index: 10;
+    margin-right: -30px;
+    background-image: url("../../assets/icons/Search.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+}

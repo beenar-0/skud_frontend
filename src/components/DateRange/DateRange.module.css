@@ -1,0 +1,11 @@
+.container {
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 25px;
+    height: 65px;
+}

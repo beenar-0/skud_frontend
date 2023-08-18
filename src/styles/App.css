@@ -1,0 +1,58 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+.main {
+    gap: 20px;
+    display: flex;
+    padding: 20px;
+}
+
+.table__container {
+    flex-grow: 1;
+    height: 100%;
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.fat {
+    font-weight: 800;
+}
+
+.fatGray {
+    font-weight: 600;
+}
+
+.react-datepicker-wrapper{
+    border: 2px solid #15449e;
+    border-radius: 5px;
+}
+
+.react-datepicker-wrapper:focus{
+    border: 2px solid #15449e;
+    border-radius: 5px;
+}
+
+.name,
+.surName,
+.patronymic {
+   width: 16% ;
+}
+
+.department {
+    width: 50%;
+}
+
+.checkBox {
+    width: 2%;
+}
+
