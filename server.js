@@ -1,7 +1,12 @@
 import express from 'express'
 import path from 'path'
+import fs from "fs";
 const app = express()
 const PORT = 3000
+
+const processId = process.pid;
+const content = `Номер процесса: ${processId}\n`;
+fs.writeFileSync('log.txt', content, 'utf-8');
 
 app.use(express.static(__dirname))
 app.use(express.static(path.resolve(__dirname, 'build')))
