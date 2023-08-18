@@ -18,5 +18,5 @@ app.get('*', (req, res)=>{
 })
 
 app.listen(PORT, (error) => {
-    error ? console.log(error) : console.log(`listening port 3001`)
+    error ? console.log(error) : console.log(`listening port 3000`)
 })
