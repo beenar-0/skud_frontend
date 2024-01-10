@@ -2,11 +2,11 @@ import axios from 'axios'
 
 export default class PostService {
     static async getPersons() {
-        return await axios.get('http://localhost:3001/api/data')
+        return await axios.get('http://192.168.200.231:3001/api/data')
     }
 
     static async get_recap(query) {
-        const response = await axios.post('http://localhost:3001/api/get_recap',query, {
+        const response = await axios.post('http://192.168.200.231:3001/api/get_recap',query, {
             headers: {
                 'Content-Type': 'application/json'
             }
