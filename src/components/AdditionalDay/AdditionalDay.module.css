@@ -1,0 +1,134 @@
+.container {
+    position: relative;
+    padding: 30px 35px;
+    z-index: 11;
+    width: 700px;
+    min-height: 500px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    max-height: fit-content;
+}
+
+.datePicker__container {
+    gap: 10px;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.addButton {
+    font-family: Open Sans, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    background: #15449e;
+    border-radius: 5px;
+}
+
+.table__container {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
+    width: 100%;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+.removeBtn {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    background: url("../../assets/icons/trash.svg") center no-repeat;
+    background-size: contain;
+}
+
+.rightColumnCell {
+    width: 42px;
+}
+
+.restDate {
+    display: block;
+    margin: auto 0;
+}
+
+.dateCell {
+    width: 100px;
+}
+
+.close_btn {
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 25px;
+    height: 25px;
+    background: url("../../assets/icons/close.svg") center no-repeat;
+    background-size: contain;
+}
+
+.title {
+    text-align: center;
+    margin: 10px 0 40px 0;
+}
+
+.titleRow {
+    text-align: center;
+}
+
+.empty_cat {
+    margin-top: auto;
+    width: 100%;
+    height: 100px;
+    background: url("../../assets/kitik.png") center no-repeat;
+    background-size: contain;
+}
+
+.note {
+    padding: 0 5px;
+    height: 29px;
+    width: 300px;
+    border: 3px solid #15449e;
+    border-radius: 4px;
+}
+
+.input__wrapper {
+    flex-wrap: wrap;
+    width: 630px;
+    height: 75px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.dateNote {
+    max-width: 440px;
+    overflow-y: auto;
+}
+
+.error {
+    font-weight: 600;
+    color: #FF0000;
+}
+
+.modal__container {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 101vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+.modal__container._modalActive{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 70px;
+}

@@ -5,8 +5,25 @@ import DateRange from '../DateRange/DateRange'
 import postService from '../../API/postService'
 import useFetching from "../../Hooks/useFetching";
 import {Spinner} from "react-bootstrap";
+import additionalDay from "../AdditionalDay/AdditionalDay";
 
-const Filter = ({persons, excludeList, setExcludeList, reqDepartments, setReqDepartments, startDate, endDate, setEndDate, setStartDate}) => {
+const Filter = ({
+                    additionalWork,
+                    additionalRest,
+                    modalActive,
+                    setModalActive,
+                    excludedDate,
+                    setExcludedDate,
+                    persons,
+                    excludeList,
+                    setExcludeList,
+                    reqDepartments,
+                    setReqDepartments,
+                    startDate,
+                    endDate,
+                    setEndDate,
+                    setStartDate
+                }) => {
     let personsDepartments = new Set()
     persons.forEach((person) => {
         personsDepartments.add(person.Department)
@@ -18,20 +35,29 @@ const Filter = ({persons, excludeList, setExcludeList, reqDepartments, setReqDep
             if (person.Department === department) sortedPersons.push(person)
         })
     })
-    const [generateRecap, isLoading, error, setError] = useFetching(async ()=>{
+    const additionalRestDates = additionalRest.map(item=>{
+        return item.date
+    })
+    const additionalWorkDates = additionalWork.map(item=>{
+        return item.date
+    })
+
+    const [generateRecap, isLoading, error, setError] = useFetching(async () => {
         const query = {
             startDate: {
-                day: new Date(startDate).getDate().toString().padStart(2,'0'),
-                month: (new Date(startDate).getMonth()+1).toString().padStart(2,'0'),
+                day: new Date(startDate).getDate().toString().padStart(2, '0'),
+                month: (new Date(startDate).getMonth() + 1).toString().padStart(2, '0'),
                 year: new Date(startDate).getFullYear().toString()
             },
             endDate: {
-                day: new Date(endDate).getDate().toString().padStart(2,'0'),
-                month: (new Date(endDate).getMonth()+1).toString().padStart(2,'0'),
+                day: new Date(endDate).getDate().toString().padStart(2, '0'),
+                month: (new Date(endDate).getMonth() + 1).toString().padStart(2, '0'),
                 year: new Date(endDate).getFullYear().toString()
             },
             excludeList: [...excludeList],
-            reqDepartments: [...reqDepartments]
+            reqDepartments: [...reqDepartments],
+            additionalWork:[...additionalWorkDates],
+            additionalRest:[...additionalRestDates]
         }
         await postService.get_recap(query)
     })
@@ -40,24 +66,41 @@ const Filter = ({persons, excludeList, setExcludeList, reqDepartments, setReqDep
             <div className={[classes.container, classes.categoriesContainer].join(' ')}>
                 <div
                     className={isLoading ? classes.buttonPressed : classes.button}
-                    onClick={async ()=>{
-                        console.log('click')
+                    onClick={async () => {
                         if (!isLoading) generateRecap()
                     }}
                 >
                     {
-                        isLoading ? <Spinner animation="border" /> : 'Сгенерировать отчёт'
+                        isLoading ? <Spinner animation="border"/> : 'Сгенерировать отчёт'
                     }
                 </div>
                 <div className={[classes.title, classes.categories].join(' ')}>
                     Даты:
                 </div>
                 <DateRange
+                    excludedDate={excludedDate}
+                    setExcludedDate={setExcludedDate}
                     startDate={startDate}
                     setStartDate={setStartDate}
                     setEndDate={setEndDate}
                     endDate={endDate}
                 ></DateRange>
+                <div
+                    className={classes.additionalDate__container}
+                    onClick={()=>{
+                        setModalActive({type: "rest", isActive: true})
+                    }}
+                >
+                    <span className={classes.additionalDate}>Дополнительные выходные дни</span>
+                </div>
+                <div
+                    className={classes.additionalDate__container}
+                    onClick={()=>{
+                        setModalActive({type: "work", isActive: true})
+                    }}
+                >
+                    <span className={classes.additionalDate}>Дополнительные рабочие дни</span>
+                </div>
                 <div className={[classes.title, classes.categories].join(' ')}>
                     Отделы:
                 </div>
@@ -70,7 +113,8 @@ const Filter = ({persons, excludeList, setExcludeList, reqDepartments, setReqDep
                 />
             </div>
         </div>
-    );
+    )
+        ;
 };
 
 export default Filter;

@@ -19,7 +19,7 @@
 .lupa {
     opacity: 0.6;
     content: '';
-    z-index: 10;
+    z-index: 5;
     margin-right: -30px;
     background-image: url("../../assets/icons/Search.png");
     background-position: center;

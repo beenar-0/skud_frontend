@@ -1,53 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6f471b04-3222-41a4-9158-80a0670d9742" name="Changes" comment="alpha version">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/skud-frontend.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/favicon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/static/css/main.c7f71840.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/static/css/main.c7f71840.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/static/js/main.d1b59ea0.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/static/js/main.d1b59ea0.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/static/js/main.d1b59ea0.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/static/media/atomtex_logo.949bcb6d92d8e74bce47.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/static/media/time.f96e77edf04f003d95af.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/favicon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/postService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Hooks/useFetching.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/icons/Search.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/icons/atomtex_logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/time.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/DateRange/DateRange.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/DateRange/DateRange.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/DepartmentList/DepartmentList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/DepartmentList/DepartmentList.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Filter/Filter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Filter/Filter.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Header/Header.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Header/MyHeader.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Pepa/Pepa.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Pepa/Pepa.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Search/Search.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Search/Search.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/App.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/styles/normalize.css" afterDir="false" />
+    <list default="true" id="6f471b04-3222-41a4-9158-80a0670d9742" name="Changes" comment="service update">
+      <change afterPath="$PROJECT_DIR$/src/components/AdditionalDay/AdditionalDay.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/AdditionalDay/AdditionalDay.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/postService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/postService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DateRange/DateRange.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DateRange/DateRange.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DateRange/DateRange.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DateRange/DateRange.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Filter/Filter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Filter/Filter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Filter/Filter.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Filter/Filter.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Search/Search.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Search/Search.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/App.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,22 +40,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Projects/skud/skud-frontend&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/Projects/skud/skud_frontend",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projects\skud\skud-frontend\src\assets\icons" />
@@ -126,7 +92,42 @@
       <workItem from="1692361762960" duration="63000" />
       <workItem from="1692361827454" duration="12000" />
       <workItem from="1692361841022" duration="102000" />
+      <workItem from="1692607191734" duration="42000" />
+      <workItem from="1692607315375" duration="16000" />
+      <workItem from="1692616030430" duration="1193000" />
+      <workItem from="1692689535728" duration="2242000" />
+      <workItem from="1693824916980" duration="51000" />
+      <workItem from="1694086566996" duration="6368000" />
+      <workItem from="1694161521428" duration="2030000" />
+      <workItem from="1694418704393" duration="6795000" />
+      <workItem from="1694498714251" duration="1512000" />
+      <workItem from="1694526757684" duration="598000" />
+      <workItem from="1694585173181" duration="3251000" />
+      <workItem from="1694603477936" duration="12000" />
+      <workItem from="1694781134479" duration="720000" />
+      <workItem from="1695122232330" duration="811000" />
+      <workItem from="1695284667776" duration="734000" />
+      <workItem from="1700469847928" duration="597000" />
+      <workItem from="1703761931413" duration="2556000" />
+      <workItem from="1703831388695" duration="1106000" />
+      <workItem from="1704367164675" duration="3062000" />
+      <workItem from="1704371253685" duration="5214000" />
+      <workItem from="1704439749039" duration="595000" />
+      <workItem from="1704442594195" duration="18803000" />
+      <workItem from="1704696690491" duration="1744000" />
+      <workItem from="1704714643068" duration="5535000" />
+      <workItem from="1704781886132" duration="16730000" />
+      <workItem from="1704885377707" duration="2218000" />
+      <workItem from="1704888294345" duration="4735000" />
     </task>
+    <task id="LOCAL-00001" summary="service update">
+      <created>1692607227506</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1692607227506</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,6 +146,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="alpha version" />
-    <option name="LAST_COMMIT_MESSAGE" value="alpha version" />
+    <MESSAGE value="service update" />
+    <option name="LAST_COMMIT_MESSAGE" value="service update" />
   </component>
 </project>

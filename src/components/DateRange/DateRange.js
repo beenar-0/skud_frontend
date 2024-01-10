@@ -2,9 +2,10 @@ import React, {useEffect, useState} from "react";
 import DatePicker from "react-datepicker";
 import classes from "./DateRange.module.css";
 import "react-datepicker/dist/react-datepicker.css";
+import {logDOM} from "@testing-library/react";
 
 
-const DateRange = ({startDate, endDate, setEndDate, setStartDate}) => {
+const DateRange = ({startDate, endDate, setEndDate, setStartDate, excludedDate, setExcludedDate}) => {
     return (
         <div className={classes.container}>
             <DatePicker
