@@ -1,0 +1,16 @@
+2024-01-10 17:00:38 - Starting C:\Program Files\nodejs\node.exe  --harmony D:\Projects\skud\skud_frontend\node_modules\node-windows\lib\wrapper.js --file D:\Projects\skud\skud_frontend\server.js --scriptoptions= --log "skud_backend wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2024-01-10 17:00:38 - Started 10484
+2024-01-10 17:01:08 - Stopping skud_backend.exe
+2024-01-10 17:01:08 - ProcessKill 10484
+2024-01-10 17:01:08 - Found child process: 6724 Name: conhost.exe
+2024-01-10 17:01:08 - Found child process: 12404 Name: node.exe
+2024-01-10 17:01:08 - Stopping process 6724
+2024-01-10 17:01:08 - Send SIGINT 6724
+2024-01-10 17:01:08 - SIGINT to 6724 failed - Killing as fallback
+2024-01-10 17:01:08 - Stopping process 12404
+2024-01-10 17:01:08 - Send SIGINT 12404
+2024-01-10 17:01:08 - SIGINT to 12404 failed - Killing as fallback
+2024-01-10 17:01:08 - Stopping process 10484
+2024-01-10 17:01:08 - Send SIGINT 10484
+2024-01-10 17:01:08 - SIGINT to 10484 failed - Killing as fallback
+2024-01-10 17:01:08 - Finished skud_backend.exe

@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6f471b04-3222-41a4-9158-80a0670d9742" name="Changes" comment="service update">
-      <change afterPath="$PROJECT_DIR$/src/components/AdditionalDay/AdditionalDay.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/AdditionalDay/AdditionalDay.module.css" afterDir="false" />
+    <list default="true" id="6f471b04-3222-41a4-9158-80a0670d9742" name="Changes" comment="fix of api url">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/API/postService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/postService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DateRange/DateRange.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DateRange/DateRange.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DateRange/DateRange.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DateRange/DateRange.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Filter/Filter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Filter/Filter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Filter/Filter.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Filter/Filter.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Search/Search.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Search/Search.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/css/main.c7f71840.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/css/main.c7f71840.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/js/main.d1b59ea0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/js/main.d1b59ea0.js.LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/js/main.d1b59ea0.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service.js" beforeDir="false" afterPath="$PROJECT_DIR$/service.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,22 +37,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/Projects/skud/skud_frontend",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/skud/skud_frontend&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projects\skud\skud-frontend\src\assets\icons" />
@@ -118,7 +115,10 @@
       <workItem from="1704714643068" duration="5535000" />
       <workItem from="1704781886132" duration="16730000" />
       <workItem from="1704885377707" duration="2218000" />
-      <workItem from="1704888294345" duration="4735000" />
+      <workItem from="1704888294345" duration="5489000" />
+      <workItem from="1704893935978" duration="73000" />
+      <workItem from="1704895136449" duration="46000" />
+      <workItem from="1704953857946" duration="1208000" />
     </task>
     <task id="LOCAL-00001" summary="service update">
       <created>1692607227506</created>
@@ -127,7 +127,21 @@
       <option name="project" value="LOCAL" />
       <updated>1692607227506</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add additional work and rest days feature">
+      <created>1704893898143</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1704893898143</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix of api url">
+      <created>1704893994918</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1704893994918</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,6 +161,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="alpha version" />
     <MESSAGE value="service update" />
-    <option name="LAST_COMMIT_MESSAGE" value="service update" />
+    <MESSAGE value="add additional work and rest days feature" />
+    <MESSAGE value="fix of api url" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix of api url" />
   </component>
 </project>

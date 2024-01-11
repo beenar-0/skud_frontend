@@ -1,15 +1,18 @@
 {
   "files": {
-    "main.css": "./static/css/main.c7f71840.css",
-    "main.js": "./static/js/main.d1b59ea0.js",
+    "main.css": "./static/css/main.53f4193d.css",
+    "main.js": "./static/js/main.e4fa28ce.js",
+    "static/media/kitik.png": "./static/media/kitik.a50e8090b02a70c67c8a.png",
     "static/media/time.gif": "./static/media/time.f96e77edf04f003d95af.gif",
     "static/media/atomtex_logo.png": "./static/media/atomtex_logo.949bcb6d92d8e74bce47.png",
+    "static/media/trash.svg": "./static/media/trash.9297a0adcc51d48f0158.svg",
+    "static/media/close.svg": "./static/media/close.ba475ba76972c96aae32.svg",
     "index.html": "./index.html",
-    "main.c7f71840.css.map": "./static/css/main.c7f71840.css.map",
-    "main.d1b59ea0.js.map": "./static/js/main.d1b59ea0.js.map"
+    "main.53f4193d.css.map": "./static/css/main.53f4193d.css.map",
+    "main.e4fa28ce.js.map": "./static/js/main.e4fa28ce.js.map"
   },
   "entrypoints": [
-    "static/css/main.c7f71840.css",
-    "static/js/main.d1b59ea0.js"
+    "static/css/main.53f4193d.css",
+    "static/js/main.e4fa28ce.js"
   ]
 }
