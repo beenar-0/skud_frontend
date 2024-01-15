@@ -13,7 +13,7 @@ export default class PostService {
         })
         const recapID = response.data
         const linkToDownload = document.createElement('a')
-        linkToDownload.href = `http://localhost:3001/api/download_recap/${recapID}`
+        linkToDownload.href = `http://192.168.200.231:3001/api/download_recap/${recapID}`
         linkToDownload.setAttribute('download',`recap_${recapID}.xlsx` )
         linkToDownload.addEventListener('click', ()=>{
         })
