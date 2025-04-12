@@ -5,9 +5,13 @@ import DateRange from '../DateRange/DateRange'
 import postService from '../../API/postService'
 import useFetching from "../../Hooks/useFetching";
 import {Spinner} from "react-bootstrap";
-import additionalDay from "../AdditionalDay/AdditionalDay";
+import Form from "react-bootstrap/Form";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 const Filter = ({
+                    isStrict,
+                    setIsStrict,
                     additionalWork,
                     additionalRest,
                     modalActive,
@@ -35,10 +39,10 @@ const Filter = ({
             if (person.Department === department) sortedPersons.push(person)
         })
     })
-    const additionalRestDates = additionalRest.map(item=>{
+    const additionalRestDates = additionalRest.map(item => {
         return item.date
     })
-    const additionalWorkDates = additionalWork.map(item=>{
+    const additionalWorkDates = additionalWork.map(item => {
         return item.date
     })
 
@@ -56,11 +60,20 @@ const Filter = ({
             },
             excludeList: [...excludeList],
             reqDepartments: [...reqDepartments],
-            additionalWork:[...additionalWorkDates],
-            additionalRest:[...additionalRestDates]
+            additionalWork: [...additionalWorkDates],
+            additionalRest: [...additionalRestDates],
+            isStrict: isStrict
         }
         await postService.get_recap(query)
     })
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Если опция включена, то при наличии хотя бы одного случая «не прикладывал(а)» день считается полностью
+            пропущенным и засчитывается как 0 часов.
+            Если опция выключена, то дни, когда сотрудник утром и(или) вечером не прикладывал пропуск, не учитываются в
+            общем количестве отработанных часов.
+        </Tooltip>
+    );
     return (
         <div className={classes.wrapper}>
             <div className={[classes.container, classes.categoriesContainer].join(' ')}>
@@ -87,7 +100,7 @@ const Filter = ({
                 ></DateRange>
                 <div
                     className={classes.additionalDate__container}
-                    onClick={()=>{
+                    onClick={() => {
                         setModalActive({type: "rest", isActive: true})
                     }}
                 >
@@ -95,11 +108,32 @@ const Filter = ({
                 </div>
                 <div
                     className={classes.additionalDate__container}
-                    onClick={()=>{
+                    onClick={() => {
                         setModalActive({type: "work", isActive: true})
                     }}
                 >
                     <span className={classes.additionalDate}>Дополнительные рабочие дни</span>
+                </div>
+                <div className={classes.strictModeWrapper}>
+                    <div className={classes.separator}></div>
+                    <div className={classes.checkLineContainer}>
+                        <span>Строгий подсчёт</span>
+                        <OverlayTrigger
+                            placement="top"
+                            delay={{show: 250, hide: 400}}
+                            overlay={renderTooltip}
+                        >
+                            <div className={classes.hintBtn}> ?</div>
+                        </OverlayTrigger>
+                        <input
+                            type="checkbox"
+                            checked={isStrict}
+                            onChange={(e)=>{
+                                setIsStrict(e.target.checked)
+                            }}
+                        ></input>
+                    </div>
+                    <div className={classes.separator}></div>
                 </div>
                 <div className={[classes.title, classes.categories].join(' ')}>
                     Отделы:
