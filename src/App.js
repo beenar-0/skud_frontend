@@ -10,11 +10,11 @@ import Login from "./components/Login/Login";
 
 
 function App() {
+    const [reqList, setReqList] = useState([])
     const [isStrict, setIsStrict] = useState(true)
     const [block, setBlock] = useState(true)
     const [persons, setPersons] = useState([]);
     const [departments, setDepartments] = useState([])
-    const [reqDepartments, setReqDepartments] = useState([])
     useEffect(() => {
         postService.getPersons()
             .then((res) => {
@@ -22,7 +22,6 @@ function App() {
                 setDepartments(res.data.departments)
             });
     }, []);
-    const [excludeList, setExcludeList] = useState([])
     const [startDate, setStartDate] = useState(Date.now());
     const [excludedDate, setExcludedDate] = useState([])
     const [endDate, setEndDate] = useState(Date.now());
@@ -43,33 +42,18 @@ function App() {
         const storedExcludeList = localStorage.getItem('excludeList');
         const storedIsStrict = localStorage.getItem('isStrict')
         storedIsStrict === 'true' ? setIsStrict(true) : setIsStrict(false)
-        if (storedReqDepartments) {
-            setReqDepartments(JSON.parse(storedReqDepartments));
-        }
-
-        if (storedExcludeList) {
-            setExcludeList(JSON.parse(storedExcludeList));
-        }
     }, []);
-    useEffect(() => {
-        const storedReqDepartments = localStorage.getItem('reqDepartments');
-        if (!storedReqDepartments) {
-            setReqDepartments(departments.map(department => department.ID))
-        }
-    }, [departments])
     useEffect(() => {
         // Сохранение состояний в localStorage перед закрытием страницы
         window.onbeforeunload = () => {
             localStorage.setItem('isStrict', JSON.stringify(isStrict))
-            localStorage.setItem('reqDepartments', JSON.stringify(reqDepartments));
-            localStorage.setItem('excludeList', JSON.stringify(excludeList));
         };
 
         // Очистка обработчика перед удалением компонента
         return () => {
             window.onbeforeunload = null;
         };
-    }, [reqDepartments, excludeList, isStrict]);
+    }, [isStrict]);
 
     return (
         block ?
@@ -105,11 +89,9 @@ function App() {
                         setEndDate={setEndDate}
                         endDate={endDate}
                         persons={persons}
-                        setReqDepartments={setReqDepartments}
-                        reqDepartments={reqDepartments}
                         departments={departments}
-                        excludeList={excludeList}
-                        setExcludeList={setExcludeList}
+                        reqList={reqList}
+                        setReqList={setReqList}
                     />
                     <div className='table__container'>
                         <Table striped bordered hover>
@@ -122,29 +104,14 @@ function App() {
                                 <th className="checkBox">
                                     <Form.Check
                                         type="checkbox"
-                                        checked={excludeList.length === 0}
+                                        checked={reqList.length === persons.length}
                                         onChange={() => {
-                                            if (excludeList.length === persons.length) {
-                                                setExcludeList([])
-                                                let temp = new Set()
-                                                persons.map((person) => {
-                                                    temp.add(person.DepartmentID)
-                                                })
-                                                setReqDepartments([...temp])
-                                            } else if (excludeList.length > 0) {
-                                                setExcludeList([])
-                                                let temp = new Set()
-                                                persons.map((person) => {
-                                                    temp.add(person.DepartmentID)
-                                                })
-                                                setReqDepartments([...temp])
+                                            if (reqList.length === persons.length) {
+                                                // Снимаем выделение со всех
+                                                setReqList([]);
                                             } else {
-                                                let temp = []
-                                                persons.map((person) => {
-                                                    temp.push(person.ID)
-                                                })
-                                                setExcludeList([...temp])
-                                                setReqDepartments([])
+                                                // Выделяем всех
+                                                setReqList(persons.map(person => person.ID));
                                             }
                                         }}
                                     />
@@ -166,26 +133,18 @@ function App() {
                                         <td>
                                             <Form.Check
                                                 type="checkbox"
-                                                checked={!excludeList.find(el => el === employee.ID)}
+                                                checked={reqList.includes(employee.ID)}
                                                 onChange={() => {
-                                                    if (excludeList.includes(employee.ID)) setExcludeList(prevList => prevList.filter(el => el !== employee.ID))
-                                                    else {
-                                                        setExcludeList((prevList) => {
-                                                            const res = [...prevList, employee.ID]
-                                                            let countedAll = persons.reduce((counter, person) => {
-                                                                if (person.DepartmentID === employee.DepartmentID) return counter + 1
-                                                                return counter
-                                                            }, 0)
-                                                            let countedCurr = res.reduce((counter, excludeEl) => {
-                                                                if (persons.find(person => person.ID === excludeEl && person.DepartmentID === employee.DepartmentID)) return counter + 1
-                                                                else return counter
-                                                            }, 0)
-                                                            if (countedAll === countedCurr) setReqDepartments(prevState => prevState.filter(el => el !== employee.DepartmentID))
-                                                            return res
-                                                        })
-                                                    }
-                                                    if (!persons.find((el) => el.DepartmentID === employee.DepartmentID)) setReqDepartments(prevList => prevList.filter(el => el !== employee.DepartmentID))
-                                                    if (!reqDepartments.includes(employee.DepartmentID)) setReqDepartments(prevState => [...prevState, employee.DepartmentID])
+                                                    setReqList(prev => {
+                                                        // Если сотрудник уже выбран - убираем его
+                                                        if (prev.includes(employee.ID)) {
+                                                            return prev.filter(id => id !== employee.ID);
+                                                        }
+                                                        // Если не выбран - добавляем
+                                                        else {
+                                                            return [...prev, employee.ID];
+                                                        }
+                                                    });
                                                 }}
                                             />
                                         </td>

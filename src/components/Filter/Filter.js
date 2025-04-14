@@ -5,7 +5,6 @@ import DateRange from '../DateRange/DateRange'
 import postService from '../../API/postService'
 import useFetching from "../../Hooks/useFetching";
 import {Spinner} from "react-bootstrap";
-import Form from "react-bootstrap/Form";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
@@ -14,14 +13,12 @@ const Filter = ({
                     setIsStrict,
                     additionalWork,
                     additionalRest,
-                    modalActive,
                     setModalActive,
                     excludedDate,
                     setExcludedDate,
                     persons,
-                    excludeList,
-                    setExcludeList,
-                    reqDepartments,
+                    reqList,
+                    setReqList,
                     setReqDepartments,
                     startDate,
                     endDate,
@@ -47,6 +44,15 @@ const Filter = ({
     })
 
     const [generateRecap, isLoading, error, setError] = useFetching(async () => {
+        const excludeList = persons
+            .filter(person => !reqList.includes(person.ID))
+            .map(person => person.ID);
+
+        const reqDepartments = [...new Set(
+            persons
+                .filter(person => reqList.includes(person.ID))
+                .map(person => person.DepartmentID)
+        )];
         const query = {
             startDate: {
                 day: new Date(startDate).getDate().toString().padStart(2, '0'),
@@ -58,6 +64,7 @@ const Filter = ({
                 month: (new Date(endDate).getMonth() + 1).toString().padStart(2, '0'),
                 year: new Date(endDate).getFullYear().toString()
             },
+            reqList: [...reqList],
             excludeList: [...excludeList],
             reqDepartments: [...reqDepartments],
             additionalWork: [...additionalWorkDates],
@@ -128,7 +135,7 @@ const Filter = ({
                         <input
                             type="checkbox"
                             checked={isStrict}
-                            onChange={(e)=>{
+                            onChange={(e) => {
                                 setIsStrict(e.target.checked)
                             }}
                         ></input>
@@ -139,10 +146,8 @@ const Filter = ({
                     Отделы:
                 </div>
                 <DepartmentList
-                    excludeList={excludeList}
-                    setExcludeList={setExcludeList}
-                    setReqDepartments={setReqDepartments}
-                    reqDepartments={reqDepartments}
+                    reqList={reqList}
+                setReqList={setReqList}
                     sortedPersons={sortedPersons}
                 />
             </div>

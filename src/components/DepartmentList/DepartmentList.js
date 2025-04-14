@@ -1,58 +1,82 @@
 import classes from "./DepartmentList.module.css";
+import { useMemo } from "react";
 
-const DepartmentList = ({excludeList, setExcludeList, sortedPersons, reqDepartments, setReqDepartments}) => {
-    let departments = []
-    sortedPersons.forEach((person) => {
-        if (!departments.find(item => item.DepartmentID === person.DepartmentID)) departments.push({
-            Department: person.Department,
-            DepartmentID: person.DepartmentID
-        })
-    })
+const DepartmentList = ({ reqList, setReqList, sortedPersons }) => {
+    // Получаем уникальные департаменты
+    const departments = useMemo(() => {
+        const uniqueDepartments = [];
+        const seenIds = new Set();
 
-    function isChecked(temp) {
-        let acc = 0
-        temp.forEach((item) => {
-            if (!excludeList.find((el => el === item.ID))) acc++
-        })
-        return !!acc
-    }
+        for (const person of sortedPersons) {
+            if (!seenIds.has(person.DepartmentID)) {
+                seenIds.add(person.DepartmentID);
+                uniqueDepartments.push({
+                    Department: person.Department,
+                    DepartmentID: person.DepartmentID
+                });
+            }
+        }
+
+        return uniqueDepartments;
+    }, [sortedPersons]);
+
+    // Проверяем, выбран ли хотя бы один сотрудник в отделе
+    const isDepartmentPartiallySelected = (departmentId) => {
+        const deptPersons = sortedPersons.filter(p => p.DepartmentID === departmentId);
+        return deptPersons.some(person => reqList.includes(person.ID));
+    };
+
+    // Проверяем, выбран ли весь отдел полностью
+    const isDepartmentFullySelected = (departmentId) => {
+        const deptPersons = sortedPersons.filter(p => p.DepartmentID === departmentId);
+        return deptPersons.length > 0 && deptPersons.every(person => reqList.includes(person.ID));
+    };
+
+    // Обработчик переключения отдела
+    const handleDepartmentToggle = (departmentId) => {
+        const deptPersons = sortedPersons.filter(p => p.DepartmentID === departmentId);
+        const allDeptPersonIds = deptPersons.map(p => p.ID);
+        const shouldSelect = !isDepartmentFullySelected(departmentId);
+
+        setReqList(prev => {
+            if (shouldSelect) {
+                // Добавляем всех сотрудников отдела
+                const newList = [...prev];
+                allDeptPersonIds.forEach(id => {
+                    if (!newList.includes(id)) newList.push(id);
+                });
+                return newList;
+            } else {
+                // Удаляем всех сотрудников отдела
+                return prev.filter(id => !allDeptPersonIds.includes(id));
+            }
+        });
+    };
 
     return (
         <ul className={classes.departmentList}>
             {departments.map(department => {
-                let temp = sortedPersons.filter(el => el.DepartmentID === department.DepartmentID)
+                const isFullySelected = isDepartmentFullySelected(department.DepartmentID);
+                const isPartiallySelected = isDepartmentPartiallySelected(department.DepartmentID) && !isFullySelected;
+
                 return (
                     <li className={classes.listItem} key={department.DepartmentID}>
                         <label className={classes.listItem__inner}>
                             {department.Department}
                             <input
-                                checked={isChecked(temp, department.DepartmentID)}
                                 type="checkbox"
-                                onChange={() => {
-                                    let acc = 0
-                                    temp.map((item) => {
-                                        if (excludeList.includes(item.ID)) acc++
-                                    })
-                                    if (acc === temp.length) setReqDepartments(prevState => prevState.filter(el => el !== department.DepartmentID))
-                                    if (reqDepartments.includes(department.DepartmentID)) {
-                                        temp = temp.map(item => item.ID)
-                                        temp = temp.filter((item) => {
-                                            return !excludeList.find(el => el === item)
-                                        })
-                                        setExcludeList(prevList => [...prevList, ...temp]);
-                                        setReqDepartments(prevState=>prevState.filter(el => el !== department.DepartmentID));
-                                    } else {
-                                        temp.forEach((item) => {
-                                            setExcludeList(prevList => prevList.filter(el => el !== item.ID))
-                                        })
-                                        setReqDepartments(prevList=>[...prevList, department.DepartmentID])
+                                checked={isFullySelected}
+                                ref={input => {
+                                    if (input) {
+                                        input.indeterminate = isPartiallySelected;
                                     }
                                 }}
+                                onChange={() => handleDepartmentToggle(department.DepartmentID)}
                             />
                         </label>
                         <div className={classes.separator}></div>
                     </li>
-                )
+                );
             })}
         </ul>
     );
