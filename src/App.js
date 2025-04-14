@@ -10,18 +10,21 @@ import Login from "./components/Login/Login";
 
 
 function App() {
+    const [userFullName, setUserFullName] = useState({name:'', surname:'', patronymic:''})
     const [reqList, setReqList] = useState([])
     const [isStrict, setIsStrict] = useState(true)
     const [block, setBlock] = useState(true)
     const [persons, setPersons] = useState([]);
     const [departments, setDepartments] = useState([])
     useEffect(() => {
-        postService.getPersons()
-            .then((res) => {
-                setPersons(res.data.persons);
-                setDepartments(res.data.departments)
-            });
-    }, []);
+        if (!block) {
+            postService.getPersons(userFullName)
+                .then((res) => {
+                    setPersons(res.data.persons);
+                    setDepartments(res.data.departments)
+                });
+        }
+    }, [block]);
     const [startDate, setStartDate] = useState(Date.now());
     const [excludedDate, setExcludedDate] = useState([])
     const [endDate, setEndDate] = useState(Date.now());
@@ -54,10 +57,17 @@ function App() {
             window.onbeforeunload = null;
         };
     }, [isStrict]);
+    // useEffect(()=>{
+    //     if (!block) {
+    //
+    //     }
+    // }, [block])
 
     return (
         block ?
             <Login
+                setUserFullName={setUserFullName}
+                userFullName={userFullName}
                 block={block}
                 setBlock={setBlock}
             ></Login>

@@ -1,8 +1,12 @@
 import axios from 'axios'
 
 export default class PostService {
-    static async getPersons() {
-        return await axios.get('http://192.168.200.251:3001/api/data')
+    static async getPersons(userFullName) {
+        return await axios.post('http://192.168.200.251:3001/api/data', userFullName, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
     }
 
     static async get_recap(query) {

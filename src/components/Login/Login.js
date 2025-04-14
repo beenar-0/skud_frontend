@@ -4,7 +4,7 @@ import classes from "./Login.module.css";
 import PostService from "../../API/postService";
 import er from "react-datepicker";
 
-const Login = ({block, setBlock}) => {
+const Login = ({block, setBlock, setUserFullName, userFullName}) => {
     const [err, setErr] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -18,7 +18,12 @@ const Login = ({block, setBlock}) => {
                         e.preventDefault()
                         try {
                             const response = await PostService.login([username, password])
-                            if (response.data.status === 'success') setBlock(false)
+                            if (response.data.status === 'success') {
+                                const regex = new RegExp(/^(\S+)\s+(\S+)\s+(\S+)$/)
+                                const match = (response.data.displayName).match(regex)
+                                setUserFullName({surname:match[1],name:match[2],patronymic:match[3]})
+                                setBlock(false)
+                            }
                         } catch (err) {
                             setBlock(true)
                             console.log(err)
