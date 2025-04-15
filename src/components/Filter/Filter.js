@@ -19,7 +19,6 @@ const Filter = ({
                     persons,
                     reqList,
                     setReqList,
-                    setReqDepartments,
                     startDate,
                     endDate,
                     setEndDate,
@@ -147,7 +146,7 @@ const Filter = ({
                 </div>
                 <DepartmentList
                     reqList={reqList}
-                setReqList={setReqList}
+                    setReqList={setReqList}
                     sortedPersons={sortedPersons}
                 />
             </div>

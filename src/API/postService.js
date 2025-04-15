@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 export default class PostService {
-    static async getPersons(userFullName) {
-        return await axios.post('http://192.168.200.251:3001/api/data', userFullName, {
+    static async getPersons(userFullName, username) {
+        return await axios.post('http://192.168.200.251:3001/api/data', {userFullName,username}, {
             headers: {
                 'Content-Type': 'application/json'
             }

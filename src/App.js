@@ -10,7 +10,8 @@ import Login from "./components/Login/Login";
 
 
 function App() {
-    const [userFullName, setUserFullName] = useState({name:'', surname:'', patronymic:''})
+    const [userFullName, setUserFullName] = useState({name: '', surname: '', patronymic: ''})
+    const [username, setUsername] = useState('')
     const [reqList, setReqList] = useState([])
     const [isStrict, setIsStrict] = useState(true)
     const [block, setBlock] = useState(true)
@@ -18,7 +19,7 @@ function App() {
     const [departments, setDepartments] = useState([])
     useEffect(() => {
         if (!block) {
-            postService.getPersons(userFullName)
+            postService.getPersons(userFullName, username)
                 .then((res) => {
                     setPersons(res.data.persons);
                     setDepartments(res.data.departments)
@@ -41,8 +42,6 @@ function App() {
     }, [searchQuery, persons])
     useEffect(() => {
         // Загрузка состояний из localStorage при загрузке страницы
-        const storedReqDepartments = localStorage.getItem('reqDepartments');
-        const storedExcludeList = localStorage.getItem('excludeList');
         const storedIsStrict = localStorage.getItem('isStrict')
         storedIsStrict === 'true' ? setIsStrict(true) : setIsStrict(false)
     }, []);
@@ -57,15 +56,12 @@ function App() {
             window.onbeforeunload = null;
         };
     }, [isStrict]);
-    // useEffect(()=>{
-    //     if (!block) {
-    //
-    //     }
-    // }, [block])
 
     return (
         block ?
             <Login
+                username={username}
+                setUsername={setUsername}
                 setUserFullName={setUserFullName}
                 userFullName={userFullName}
                 block={block}
@@ -81,6 +77,10 @@ function App() {
                     setModalActive={setModalActive}
                 />
                 <Header
+                    setBlock={setBlock}
+                    setPersons={setPersons}
+                    setDepartments={setDepartments}
+                    userFullName={userFullName}
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
                 />

@@ -24,7 +24,6 @@
 .atomtexLogo {
     margin: 0 10px;
     order: 1;
-    cursor: pointer;
     height: 40px;
     width: 150px;
     background-image: url("../../assets/icons/atomtex_logo.png");
@@ -49,4 +48,27 @@
 }
 
 
+.usernameContainer {
+    margin:0 20px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+}
 
+.entryMsg {
+    font-size: 12px;
+}
+
+.exitBtn {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background: url("../../assets/exit.png") center center no-repeat;
+    background-size: contain;
+}
+
+.exitBtn:hover {
+    background-image: url("../../assets/exit.gif");
+}

@@ -2,11 +2,9 @@ import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form'
 import classes from "./Login.module.css";
 import PostService from "../../API/postService";
-import er from "react-datepicker";
 
-const Login = ({block, setBlock, setUserFullName, userFullName}) => {
+const Login = ({block, setBlock, setUserFullName, setUsername, username}) => {
     const [err, setErr] = useState('')
-    const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     return (
         <div className={classes.wrapper}>
@@ -30,6 +28,9 @@ const Login = ({block, setBlock, setUserFullName, userFullName}) => {
                             switch (err.response.status) {
                                 case 401:
                                     setErr('Неверный логин или пароль')
+                                    break
+                                case 403:
+                                    setErr('Вы не являетесь начальником структурного подразделения')
                                     break
                                 case 500:
                                     setErr('Внутренняя ошибка сервера')
