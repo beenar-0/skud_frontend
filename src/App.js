@@ -33,6 +33,7 @@ function App() {
     const [modalActive, setModalActive] = useState({isActive: false, type: ''})
     const [additionalRest, setAdditionalRest] = useState([])
     const [additionalWork, setAdditionalWork] = useState([])
+    const [reducedDays, setReducedDays] = useState([])
     const searchedPosts = useMemo(() => {
         if (searchQuery) return [...persons].filter((person) => {
             let reg = new RegExp(`${searchQuery.toLowerCase()}`)
@@ -69,6 +70,8 @@ function App() {
             ></Login>
             : <div className={modalActive.isActive ? "App _modalActive" : "App"}>
                 <AdditionalDay
+                    reducedDays={reducedDays}
+                    setReducedDays={setReducedDays}
                     additionalWork={additionalWork}
                     setAdditionalWork={setAdditionalWork}
                     additionalRest={additionalRest}
@@ -86,6 +89,8 @@ function App() {
                 />
                 <main className='main'>
                     <Filter
+                        reducedDays={reducedDays}
+                        setReducedDays={setReducedDays}
                         isStrict={isStrict}
                         setIsStrict={setIsStrict}
                         additionalRest={additionalRest}

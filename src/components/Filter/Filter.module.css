@@ -154,8 +154,8 @@
 .additionalDate {
     display: flex;
     align-items: center;
+    flex-grow: 1;
     height: 100%;
-    width: 100%;
     color: #FFFFFF;
     text-align: center;
     font-family: 'Open Sans', sans-serif;

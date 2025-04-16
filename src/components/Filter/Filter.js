@@ -9,6 +9,8 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 const Filter = ({
+                    reducedDays,
+                    setReducedDays,
                     isStrict,
                     setIsStrict,
                     additionalWork,
@@ -68,6 +70,7 @@ const Filter = ({
             reqDepartments: [...reqDepartments],
             additionalWork: [...additionalWorkDates],
             additionalRest: [...additionalRestDates],
+            reducedDays:[...reducedDays],
             isStrict: isStrict
         }
         await postService.get_recap(query)
@@ -119,6 +122,14 @@ const Filter = ({
                     }}
                 >
                     <span className={classes.additionalDate}>Дополнительные рабочие дни</span>
+                </div>
+                <div
+                    className={classes.additionalDate__container}
+                    onClick={() => {
+                        setModalActive({type: "reduced", isActive: true})
+                    }}
+                >
+                    <span className={classes.additionalDate}>Сокращённые дни</span>
                 </div>
                 <div className={classes.strictModeWrapper}>
                     <div className={classes.separator}></div>

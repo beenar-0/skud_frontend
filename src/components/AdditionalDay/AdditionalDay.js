@@ -9,73 +9,86 @@ const AdditionalDay = ({
                            additionalWork,
                            setAdditionalWork,
                            additionalRest,
-                           setAdditionalRest
+                           setAdditionalRest,
+                           reducedDays,
+                           setReducedDays
                        }) => {
-    const [startDate, setStartDate] = useState()
-    const [note, setNote] = useState('')
-    const [error, setError] = useState('')
+    const [startDate, setStartDate] = useState();
+    const [note, setNote] = useState('');
+    const [error, setError] = useState('');
 
-    useEffect(()=>{
-        const storedAdditionalWork = localStorage.getItem('additionalWork')
-        const storedAdditionalRest = localStorage.getItem('additionalRest')
+    useEffect(() => {
+        const storedAdditionalWork = localStorage.getItem('additionalWork');
+        const storedAdditionalRest = localStorage.getItem('additionalRest');
+        const storedReducedDays = localStorage.getItem('reducedDays');
 
-        if (storedAdditionalWork) setAdditionalWork(JSON.parse(storedAdditionalWork).map(item=>{
-            item.date = new Date(item.date)
-            return item
-        }))
-        if (storedAdditionalRest) setAdditionalRest(JSON.parse(storedAdditionalRest).map(item=>{
-            item.date = new Date(item.date)
-            return item
-        }))
+        if (storedAdditionalWork) setAdditionalWork(JSON.parse(storedAdditionalWork).map(item => {
+            item.date = new Date(item.date);
+            return item;
+        }));
+        if (storedAdditionalRest) setAdditionalRest(JSON.parse(storedAdditionalRest).map(item => {
+            item.date = new Date(item.date);
+            return item;
+        }));
+        if (storedReducedDays) setReducedDays(JSON.parse(storedReducedDays).map(item => {
+            item.date = new Date(item.date);
+            return item;
+        }));
 
-    }, [])
+    }, []);
 
     useEffect(() => {
         // Сохранение состояний в localStorage перед закрытием страницы
         window.onbeforeunload = () => {
             localStorage.setItem('additionalWork', JSON.stringify(additionalWork));
             localStorage.setItem('additionalRest', JSON.stringify(additionalRest));
+            localStorage.setItem('reducedDays', JSON.stringify(reducedDays));
         };
 
         // Очистка обработчика перед удалением компонента
         return () => {
             window.onbeforeunload = null;
         };
-    }, [additionalWork, additionalRest]);
+    }, [additionalWork, additionalRest, reducedDays]);
 
     function getHumanDate(pickedDate) {
-        const date = new Date(pickedDate)
-        const day = date.getDate().toString().padStart(2, '0')
-        const month = (date.getMonth() + 1).toString().padStart(2, '0')
-        const year = date.getFullYear()
-        return `${day}.${month}.${year}`
+        const date = new Date(pickedDate);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
     }
 
     const current = {
         oppositeDays: [],
         days: [],
-        setDays: () => {
-        }
-    }
+        setDays: () => {}
+    };
+
     if (modalActive.type === 'rest') {
-        current.oppositeDays = [...additionalWork]
-        current.days = additionalRest
-        current.setDays = setAdditionalRest
+        current.oppositeDays = [...additionalWork, ...reducedDays];
+        current.days = additionalRest;
+        current.setDays = setAdditionalRest;
     }
     if (modalActive.type === 'work') {
-        current.oppositeDays = [...additionalRest]
-        current.days = additionalWork
-        current.setDays = setAdditionalWork
+        current.oppositeDays = [...additionalRest];
+        current.days = additionalWork;
+        current.setDays = setAdditionalWork;
+    }
+    if (modalActive.type === 'reduced') {
+        current.oppositeDays = [...additionalRest];
+        current.days = reducedDays;
+        current.setDays = setReducedDays;
     }
 
     return (
         <div
-            className={modalActive.isActive ? [classes.modal__container,classes._modalActive].join(' ') : classes.modal__container}
-            onClick={()=>{
-                setModalActive({isActive: false, type:""})
-                setError('')
-                setStartDate(undefined)
-                setNote('')
+            className={modalActive.isActive ? [classes.modal__container, classes._modalActive].join(' ') : classes.modal__container}
+            onClick={() => {
+                setModalActive({isActive: false, type: ""});
+                setError('');
+                setStartDate(undefined);
+                setNote('');
             }}
         >
             <div
@@ -85,15 +98,18 @@ const AdditionalDay = ({
                 <div
                     className={classes.close_btn}
                     onClick={() => {
-                        setModalActive({type: '', isActive: false})
-                        setError('')
-                        setStartDate(undefined)
-                        setNote('')
+                        setModalActive({type: '', isActive: false});
+                        setError('');
+                        setStartDate(undefined);
+                        setNote('');
                     }}
                 ></div>
                 <h1 className={classes.title}>
                     {modalActive.type === 'rest'
-                        ? "Дополнительные выходные дни" : "Дополнительные рабочие дни"}
+                        ? "Дополнительные выходные дни"
+                        : modalActive.type === 'work'
+                            ? "Дополнительные рабочие дни"
+                            : "Сокращённые дни"}
                 </h1>
                 <div className={classes.datePicker__container}>
                     <div className={classes.input__wrapper}>
@@ -109,7 +125,7 @@ const AdditionalDay = ({
                         <input
                             value={note}
                             onChange={(event) => {
-                                setNote(event.target.value)
+                                setNote(event.target.value);
                             }}
                             type={"text"}
                             placeholder={'Ввести примечание'}
@@ -119,18 +135,18 @@ const AdditionalDay = ({
                         <div
                             className={classes.addButton}
                             onClick={() => {
-                                if (current.oppositeDays.some(item => +item.date === +startDate)) setError('Дата не может быть одновременно и выходным, и рабочим!')
-                                else if (current.days.some(item => +item.date === +startDate)) setError('Дата уже находится в списке!')
+                                if (current.oppositeDays.some(item => +item.date === +startDate)) setError('Дата не может быть одновременно в другом списке!');
+                                else if (current.days.some(item => +item.date === +startDate)) setError('Дата уже находится в списке!');
                                 else if (startDate !== undefined) {
                                     current.setDays((prevState) => ([...prevState, {
                                         date: startDate,
                                         note: note
                                     }].sort((a, b) => {
-                                        if (a.date < b.date) return -1
-                                    })))
-                                    setError('')
-                                    setStartDate(undefined)
-                                    setNote('')
+                                        if (a.date < b.date) return -1;
+                                    })));
+                                    setError('');
+                                    setStartDate(undefined);
+                                    setNote('');
                                 }
                             }}
                         >Добавить
@@ -165,13 +181,13 @@ const AdditionalDay = ({
                                                 onClick={() => {
                                                     current.setDays((prevState) => {
                                                         return prevState.filter((el) => {
-                                                            return getHumanDate(item.date) !== getHumanDate(el.date)
-                                                        })
-                                                    })
+                                                            return getHumanDate(item.date) !== getHumanDate(el.date);
+                                                        });
+                                                    });
                                                 }}
                                             ></div>
                                         </td>
-                                    </tr>
+                                    </tr>;
                                 })}
                                 </tbody>
                             </Table>
