@@ -1,0 +1,121 @@
+.container {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 1rem;
+    padding: 0.5rem;
+}
+
+.headerControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.monthTitle {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.saveButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+}
+
+.scrollContainer {
+    position: relative;
+    max-width: 95vw;
+    margin: 0 auto;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+.headerRow, .dataRow {
+    display: flex;
+    min-width: fit-content;
+}
+
+.headerRow {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 15;
+}
+
+.nameCell {
+    position: sticky;
+    left: 0;
+    z-index: 20;
+    height: 50px;
+    width: 160px;
+    min-width: 160px;
+    padding: 5px;
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: #f8f9fa;
+}
+
+.dateCell {
+    position: sticky;
+    top: 0;
+    font-size: 14px;
+    width: 50px;
+    min-width: 50px;
+    padding: 8px;
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: #f8f9fa;
+}
+
+.inputCell {
+    width: 50px;
+    min-width: 50px;
+    padding: 4px;
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputField {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    font-weight: bold;
+    font-size: 20px;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.inputField::placeholder{
+    font-weight: normal;
+}
+
+.dataRow{
+
+}
+
+
+.dataRow:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.dataRow:hover {
+    background-color: #f1f1f1;
+}

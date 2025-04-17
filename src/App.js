@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Filter from "./components/Filter/Filter";
 import AdditionalDay from "./components/AdditionalDay/AdditionalDay";
 import Login from "./components/Login/Login";
+import CalendarPage from "./components/CalendarForm/CalendarForm";
 
 
 function App() {
@@ -59,7 +60,8 @@ function App() {
     }, [isStrict]);
 
     return (
-        block ?
+        true ? <><Header></Header><CalendarPage></CalendarPage></>
+            : block ?
             <Login
                 username={username}
                 setUsername={setUsername}

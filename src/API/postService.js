@@ -26,4 +26,8 @@ export default class PostService {
     static async login(creditionals) {
            return  await axios.post('http://192.168.200.251:3001/api/login', creditionals)
     }
+
+    static async get_vredniki() {
+        return await axios.post('http://192.168.200.251:3001/vredniki')
+    }
 }

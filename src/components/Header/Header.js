@@ -15,7 +15,7 @@ const Header = ({searchQuery, setSearchQuery, userFullName, setPersons, setDepar
                     Вы вошли как:
                 </div>
                 <div className={classes.userName}>
-                    {`${userFullName.surname} ${userFullName.name} ${userFullName.patronymic}`}
+                    {/*{`${userFullName.surname} ${userFullName.name} ${userFullName.patronymic}`}*/}
                 </div>
             </div>
             <Pepa></Pepa>
