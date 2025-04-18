@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import classes from "./CalendarForm.module.css";
 import PostService from "../../API/postService";
+import Spinner from 'react-bootstrap/Spinner';
 
 const CalendarPage = () => {
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -14,8 +15,9 @@ const CalendarPage = () => {
         const fetchEmployees = async () => {
             try {
                 const response = await PostService.get_vredniki();
+                console.log(response.data.recordset)
                 const employeesData = response.data.recordset.map(employee => ({
-                    id: employee.id,
+                    id: employee.ID,
                     name: employee.FullName,
                     dates: {}
                 }));
@@ -24,7 +26,10 @@ const CalendarPage = () => {
             } catch (error) {
                 console.error("Ошибка при загрузке сотрудников:", error);
             } finally {
-                setIsLoading(false);
+                setTimeout(()=>{
+                    setIsLoading(false);
+                },500)
+
             }
         };
 
@@ -34,7 +39,7 @@ const CalendarPage = () => {
     const initializeResultData = (employeesData) => {
         const initialData = {};
         employeesData.forEach(employee => {
-            initialData[employee.name] = [];
+            initialData[employee.id] = []; // Используем ID сотрудника вместо его имени
         });
         setResultData(initialData);
     };
@@ -85,15 +90,15 @@ const CalendarPage = () => {
         });
 
         setResultData(prev => {
-            const employeeName = employees[employeeIndex].name;
+            const employeeId = employees[employeeIndex].id; // Используем ID сотрудника вместо имени
             const newData = { ...prev };
 
-            const dateIndex = newData[employeeName].findIndex(item => item.date === dateObj.fullDate);
+            const dateIndex = newData[employeeId].findIndex(item => item.date === dateObj.fullDate);
 
             if (dateIndex >= 0) {
-                newData[employeeName][dateIndex].value = value;
+                newData[employeeId][dateIndex].value = value;
             } else {
-                newData[employeeName].push({
+                newData[employeeId].push({
                     date: dateObj.fullDate,
                     value
                 });
@@ -119,35 +124,43 @@ const CalendarPage = () => {
     };
 
     if (isLoading) {
-        return <div className={classes.container}>Загрузка данных...</div>;
+        return <div className={classes.spinnerContainer}><Spinner
+            animation="border"
+            role="status"
+            style={{width: '200px', height: '200px'}}
+        >
+            <span className="visually-hidden">Loading...</span>
+        </Spinner></div>;
     }
 
     return (
         <div className={classes.container}>
             <div className={classes.headerControls}>
-                <Button variant="outline-secondary" size="sm" onClick={handlePrevMonth}>
-                    ← Пред
-                </Button>
+
                 <h5 className={classes.monthTitle}>
                     {new Date(currentYear, currentMonth, 1).toLocaleDateString('ru-RU', {
                         month: 'long',
                         year: 'numeric'
                     })}
                 </h5>
+
+            </div>
+
+            <div className={classes.saveButtonContainer}>
+                <Button variant="outline-secondary" size="sm" onClick={handlePrevMonth}>
+                    ← Пред
+                </Button>
+                <Button variant="primary"  onClick={handleSave}>
+                    Сохранить
+                </Button>
                 <Button variant="outline-secondary" size="sm" onClick={handleNextMonth}>
                     След →
                 </Button>
             </div>
 
-            <div className={classes.saveButtonContainer}>
-                <Button variant="primary" size="sm" onClick={handleSave}>
-                    Сохранить
-                </Button>
-            </div>
-
             <div className={classes.scrollContainer}>
                 <div className={classes.headerRow}>
-                    <div className={classes.nameCell}>ФИО</div>
+                    <div className={classes.firstNameCell}>ФИО</div>
                     {datesArray.map((dateObj, index) => (
                         <div key={index} className={classes.dateCell}>{dateObj.displayDate}</div>
                     ))}

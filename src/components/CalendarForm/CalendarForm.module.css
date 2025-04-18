@@ -1,36 +1,40 @@
 .container {
     width: 100%;
-    max-width: 100%;
-    margin-top: 1rem;
+    max-width: 1595px;
+    margin: 15px auto;
     padding: 0.5rem;
 }
 
 .headerControls {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 10px;
+    padding: 0 35px;
 }
 
 .monthTitle {
+    text-transform: capitalize;
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 35px;
 }
 
 .saveButtonContainer {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 0.5rem;
+    margin: 20px 0;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .scrollContainer {
     position: relative;
-    max-width: 95vw;
+    max-width: 100%;
     margin: 0 auto;
     width: fit-content;
     display: flex;
     flex-direction: column;
-    max-height: 80vh;
+    max-height: 75vh;
     overflow-x: auto;
     overflow-y: auto;
     border: 1px solid #dee2e6;
@@ -52,7 +56,22 @@
 .nameCell {
     position: sticky;
     left: 0;
-    z-index: 20;
+    height: 50px;
+    width: 160px;
+    min-width: 160px;
+    padding: 5px;
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: #f8f9fa;
+}
+
+.firstNameCell {
+    position: sticky;
+    left: 0;
+    z-index: 30;
     height: 50px;
     width: 160px;
     min-width: 160px;
@@ -107,15 +126,21 @@
     font-weight: normal;
 }
 
-.dataRow{
 
-}
-
-
-.dataRow:nth-child(even) {
-    background-color: #f9f9f9;
-}
+/*.dataRow:nth-child(even) {*/
+/*    background-color: #f9f9f9;*/
+/*}*/
 
 .dataRow:hover {
     background-color: #f1f1f1;
+}
+
+.spinnerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 70vh;
+    padding: 50px;
 }
