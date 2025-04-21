@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form'
 import classes from "./Login.module.css";
 import PostService from "../../API/postService";
 
-const Login = ({block, setBlock, setUserFullName, setUsername, username}) => {
+const Login = ({block, setBlock, setUserFullName, setUsername, username, setIsVrednikiActive}) => {
     const [err, setErr] = useState('')
     const [password, setPassword] = useState('')
     return (
@@ -17,6 +17,7 @@ const Login = ({block, setBlock, setUserFullName, setUsername, username}) => {
                         try {
                             const response = await PostService.login([username, password])
                             if (response.data.status === 'success') {
+                                if (response.data.accessVredniki) setIsVrednikiActive(true)
                                 const regex = new RegExp(/^(\S+)\s+(\S+)\s+(\S+)$/)
                                 const match = (response.data.displayName).match(regex)
                                 setUserFullName({surname:match[1],name:match[2],patronymic:match[3]})

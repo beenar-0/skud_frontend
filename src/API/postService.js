@@ -30,4 +30,23 @@ export default class PostService {
     static async get_vredniki() {
         return await axios.post('http://192.168.200.251:3001/vredniki')
     }
+
+    static async getCalendarData(year, month) {
+        return await axios.post('http://192.168.200.251:3001/api/get_calendar', {
+            year,
+            month
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    static async saveCalendarData(data) {
+        return await axios.post('http://192.168.200.251:3001/api/save_calendar', data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
 }

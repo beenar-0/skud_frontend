@@ -5,46 +5,77 @@ import PostService from "../../API/postService";
 import Spinner from 'react-bootstrap/Spinner';
 
 const CalendarPage = () => {
+    const [saveMsg, setSaveMsg] = useState('')
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
     const [employees, setEmployees] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [resultData, setResultData] = useState({});
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        const fetchEmployees = async () => {
-            try {
-                const response = await PostService.get_vredniki();
-                console.log(response.data.recordset)
-                const employeesData = response.data.recordset.map(employee => ({
-                    id: employee.ID,
-                    name: employee.FullName,
-                    dates: {}
-                }));
-                setEmployees(employeesData);
-                initializeResultData(employeesData);
-            } catch (error) {
-                console.error("Ошибка при загрузке сотрудников:", error);
-            } finally {
-                setTimeout(()=>{
-                    setIsLoading(false);
-                },500)
+        setIsLoading(true);
+        fetchEmployeesAndData();
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 500);
+    }, [currentYear, currentMonth]);
 
+    const fetchEmployeesAndData = async () => {
+
+        try {
+            // Загружаем список сотрудников
+            const employeesResponse = await PostService.get_vredniki();
+            const employeesData = employeesResponse.data.recordset.map(employee => ({
+                id: employee.ID,
+                name: employee.FullName,
+                dates: {}
+            }));
+
+            // Загружаем данные за текущий месяц
+            const calendarResponse = await PostService.getCalendarData(
+                currentYear,
+                currentMonth + 1
+            );
+
+            // Формируем начальные данные
+            const initialData = {};
+            employeesData.forEach(employee => {
+                initialData[employee.id] = [];
+            });
+
+            // Заполняем данные из сервера
+            if (calendarResponse.data) {
+                Object.entries(calendarResponse.data).forEach(([employeeId, dates]) => {
+                    if (initialData[employeeId]) {
+                        initialData[employeeId] = dates.map(item => ({
+                            date: item.date,
+                            value: item.hours?.toString() || ''
+                        }));
+
+                        // Обновляем данные для отображения
+                        const employeeIndex = employeesData.findIndex(
+                            e => e.id.toString() === employeeId
+                        );
+                        if (employeeIndex !== -1) {
+                            dates.forEach(item => {
+                                const displayDate = item.date.split('.').slice(0, 2).join('.');
+                                employeesData[employeeIndex].dates[displayDate] = item.hours?.toString() || '';
+                            });
+                        }
+                    }
+                });
             }
-        };
 
-        fetchEmployees();
-    }, []);
+            setEmployees(employeesData);
+            setResultData(initialData);
+        } catch (error) {
+            console.error("Ошибка при загрузке данных:", error);
+        } finally {
 
-    const initializeResultData = (employeesData) => {
-        const initialData = {};
-        employeesData.forEach(employee => {
-            initialData[employee.id] = []; // Используем ID сотрудника вместо его имени
-        });
-        setResultData(initialData);
+        }
     };
 
-    // Функция для получения даты в формате dd.mm (для отображения)
     const getDisplayDate = (date) => {
         return date.toLocaleDateString('ru-RU', {
             day: '2-digit',
@@ -52,7 +83,6 @@ const CalendarPage = () => {
         }).replace(/\//g, '.');
     };
 
-    // Функция для получения даты в формате dd.mm.yyyy (для сохранения)
     const getFullDate = (date) => {
         return date.toLocaleDateString('ru-RU', {
             day: '2-digit',
@@ -66,17 +96,22 @@ const CalendarPage = () => {
         for (let day = 1; day <= daysInMonth; day++) {
             const date = new Date(year, month, day);
             dates.push({
-                displayDate: getDisplayDate(date), // Для отображения в заголовке
-                fullDate: getFullDate(date)      // Для сохранения в результатах
+                displayDate: getDisplayDate(date),
+                fullDate: getFullDate(date)
             });
         }
         return dates;
     };
 
-    const datesArray = generateDatesArray(currentYear, currentMonth,
-        new Date(currentYear, currentMonth + 1, 0).getDate());
+    const datesArray = generateDatesArray(
+        currentYear,
+        currentMonth,
+        new Date(currentYear, currentMonth + 1, 0).getDate()
+    );
 
     const handleCellChange = (employeeIndex, dateObj, value) => {
+        if (!/^\d*$/.test(value) || value.length > 1) return;
+
         setEmployees(prev => {
             const updatedEmployees = [...prev];
             updatedEmployees[employeeIndex] = {
@@ -90,18 +125,30 @@ const CalendarPage = () => {
         });
 
         setResultData(prev => {
-            const employeeId = employees[employeeIndex].id; // Используем ID сотрудника вместо имени
+            const employeeId = employees[employeeIndex].id;
             const newData = { ...prev };
+            const dateIndex = newData[employeeId]?.findIndex(
+                item => item.date === dateObj.fullDate
+            );
 
-            const dateIndex = newData[employeeId].findIndex(item => item.date === dateObj.fullDate);
-
-            if (dateIndex >= 0) {
-                newData[employeeId][dateIndex].value = value;
+            if (value === '') {
+                // Если значение очищено - помечаем для удаления
+                if (dateIndex >= 0) {
+                    newData[employeeId][dateIndex].value = '';
+                }
             } else {
-                newData[employeeId].push({
-                    date: dateObj.fullDate,
-                    value
-                });
+                // Обновляем или добавляем запись
+                if (dateIndex >= 0) {
+                    newData[employeeId][dateIndex].value = value;
+                } else {
+                    if (!newData[employeeId]) {
+                        newData[employeeId] = [];
+                    }
+                    newData[employeeId].push({
+                        date: dateObj.fullDate,
+                        value
+                    });
+                }
             }
 
             return newData;
@@ -109,53 +156,111 @@ const CalendarPage = () => {
     };
 
     const handlePrevMonth = () => {
-        setCurrentMonth(prev => (prev === 0 ? 11 : prev - 1));
-        if (currentMonth === 0) setCurrentYear(prev => prev - 1);
+        setIsLoading(true);
+        const newMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+        const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+        setCurrentMonth(newMonth);
+        setCurrentYear(newYear);
     };
 
     const handleNextMonth = () => {
-        setCurrentMonth(prev => (prev === 11 ? 0 : prev + 1));
-        if (currentMonth === 11) setCurrentYear(prev => prev + 1);
+        setIsLoading(true);
+        const newMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+        const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+        setCurrentMonth(newMonth);
+        setCurrentYear(newYear);
     };
 
-    const handleSave = () => {
-        console.log('Результирующие данные:', resultData);
-        alert('Данные сохранены в консоли!');
+    const handleSave = async () => {
+        setIsSaving(true);
+        try {
+            // Формируем данные для отправки
+            const dataToSend = {
+                year: currentYear,
+                month: currentMonth + 1,
+                employeesData: employees.map(employee => {
+                    const employeeData = resultData[employee.id] || [];
+                    return {
+                        employeeId: employee.id,
+                        employeeName: employee.name, // Добавляем ФИО сотрудника
+                        dates: employeeData
+                            .filter(date => date.value !== '')
+                            .map(date => ({
+                                date: date.date,
+                                hours: parseInt(date.value) || 0
+                            })),
+                        datesToDelete: employeeData
+                            .filter(date => date.value === '')
+                            .map(date => date.date)
+                    };
+                }).filter(employee =>
+                    employee.dates.length > 0 ||
+                    employee.datesToDelete.length > 0
+                )
+            };
+
+            await PostService.saveCalendarData(dataToSend);
+            console.log(dataToSend);
+            setTimeout(() => {
+                setSaveMsg('Данные успешно сохранены');
+            }, 1100);
+            await fetchEmployeesAndData();
+        } catch (error) {
+            console.error('Ошибка при сохранении данных:', error);
+            setTimeout(() => {
+                setSaveMsg('Произошла ошибка при сохранении данных');
+            }, 1100);
+        } finally {
+            setTimeout(() => {
+                setIsSaving(false);
+            }, 1000);
+            setTimeout(() => {
+                setSaveMsg('');
+            }, 5000);
+        }
     };
 
     if (isLoading) {
-        return <div className={classes.spinnerContainer}><Spinner
-            animation="border"
-            role="status"
-            style={{width: '200px', height: '200px'}}
-        >
-            <span className="visually-hidden">Loading...</span>
-        </Spinner></div>;
+        return (
+            <div className={classes.spinnerContainer}>
+                <Spinner
+                    animation="border"
+                    role="status"
+                    style={{ width: '200px', height: '200px' }}
+                >
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
     }
 
     return (
         <div className={classes.container}>
             <div className={classes.headerControls}>
-
                 <h5 className={classes.monthTitle}>
-                    {new Date(currentYear, currentMonth, 1).toLocaleDateString('ru-RU', {
-                        month: 'long',
-                        year: 'numeric'
-                    })}
+                    {(() => {
+                        const dateStr = new Date(currentYear, currentMonth, 1)
+                            .toLocaleDateString('ru-RU', {
+                                month: 'long',
+                                year: 'numeric'
+                            });
+                        const [month, year] = dateStr.split(' ');
+                        return `${month.charAt(0).toUpperCase() + month.slice(1)} ${year.toLowerCase()} г.`;
+                    })()}
                 </h5>
-
             </div>
 
             <div className={classes.saveButtonContainer}>
-                <Button variant="outline-secondary" size="sm" onClick={handlePrevMonth}>
-                    ← Пред
-                </Button>
-                <Button variant="primary"  onClick={handleSave}>
-                    Сохранить
-                </Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleNextMonth}>
-                    След →
-                </Button>
+                <button className={classes.prevBtn} onClick={handlePrevMonth}></button>
+                <div className={classes.saveButtonWrapper}>
+                    <div
+                        className={isSaving ? classes.buttonPressed : classes.button}
+                        onClick={handleSave}
+                    >
+                        {isSaving ? <Spinner animation="border"/> : 'Сохранить'}
+                    </div>
+                </div>
+                <button className={classes.nextBtn} onClick={handleNextMonth}></button>
             </div>
 
             <div className={classes.scrollContainer}>
@@ -176,11 +281,7 @@ const CalendarPage = () => {
                                     type="text"
                                     maxLength={1}
                                     value={employee.dates[dateObj.displayDate] || ''}
-                                    onChange={(e) => {
-                                        if (/^\d*$/.test(e.target.value) && e.target.value.length <= 1) {
-                                            handleCellChange(empIndex, dateObj, e.target.value);
-                                        }
-                                    }}
+                                    onChange={(e) => handleCellChange(empIndex, dateObj, e.target.value)}
                                     className={classes.inputField}
                                 />
                             </div>

@@ -1,3 +1,7 @@
+* {
+    user-select: none;
+}
+
 .header {
     padding: 0 15px;
     display: flex;
@@ -71,4 +75,59 @@
 
 .exitBtn:hover {
     background-image: url("../../assets/exit.gif");
+}
+
+.navContainer {
+    height: 100%;
+    margin: 0 30px;
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbarItem {
+    justify-content: center;
+    width: 160px;
+    margin-top: 15px;
+    padding: 0 20px 10px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px 5px 5px 0;
+}
+
+.Active {
+    cursor: auto;
+    background-color: #FFFFFF;
+    color: #000;
+    /*text-decoration: underline;*/
+    /*border-bottom: 1px solid #FFFFFF;*/
+}
+
+.navbarItem.Active:hover {
+    color: #000;
+}
+
+
+.navbarItem:hover {
+    color: #C9C9C9;
+}
+
+.lock {
+    margin: 0 5px;
+    background: url("../../assets/icons/lock.svg");
+    filter: brightness(0) saturate(100%) invert(95%) sepia(1%) saturate(66%) hue-rotate(347deg) brightness(88%) contrast(85%);
+    background-size: contain;
+    width: 15px;
+    height: 15px;
+}
+
+.Locked {
+    color: #C9C9C9;
+    cursor: auto;
 }

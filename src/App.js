@@ -11,6 +11,8 @@ import CalendarPage from "./components/CalendarForm/CalendarForm";
 
 
 function App() {
+    const [currentPage, setCurrentPage] = useState('login')
+    const [isVrednikiActive, setIsVrednikiActive] = useState(false)
     const [userFullName, setUserFullName] = useState({name: '', surname: '', patronymic: ''})
     const [username, setUsername] = useState('')
     const [reqList, setReqList] = useState([])
@@ -20,6 +22,7 @@ function App() {
     const [departments, setDepartments] = useState([])
     useEffect(() => {
         if (!block) {
+            setCurrentPage('main')
             postService.getPersons(userFullName, username)
                 .then((res) => {
                     setPersons(res.data.persons);
@@ -60,119 +63,141 @@ function App() {
     }, [isStrict]);
 
     return (
-        true ? <><Header></Header><CalendarPage></CalendarPage></>
-            : block ?
-            <Login
-                username={username}
-                setUsername={setUsername}
-                setUserFullName={setUserFullName}
-                userFullName={userFullName}
-                block={block}
+        block && currentPage === 'login' &&
+        <Login
+            username={username}
+            setUsername={setUsername}
+            setUserFullName={setUserFullName}
+            userFullName={userFullName}
+            block={block}
+            setBlock={setBlock}
+            setIsVrednikiActive={setIsVrednikiActive}
+        ></Login> ||
+        currentPage === 'vredniki' &&
+        <>
+            <Header
+                setIsVrednikiActive={setIsVrednikiActive}
+                isVrednikiActive={isVrednikiActive}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
                 setBlock={setBlock}
-            ></Login>
-            : <div className={modalActive.isActive ? "App _modalActive" : "App"}>
-                <AdditionalDay
+                setPersons={setPersons}
+                setDepartments={setDepartments}
+                userFullName={userFullName}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            >
+            </Header>
+            <CalendarPage></CalendarPage>
+        </> ||
+        currentPage === 'main' &&
+        <div className={modalActive.isActive ? "App _modalActive" : "App"}>
+            <AdditionalDay
+                reducedDays={reducedDays}
+                setReducedDays={setReducedDays}
+                additionalWork={additionalWork}
+                setAdditionalWork={setAdditionalWork}
+                additionalRest={additionalRest}
+                setAdditionalRest={setAdditionalRest}
+                modalActive={modalActive}
+                setModalActive={setModalActive}
+            />
+            <Header
+                setIsVrednikiActive={setIsVrednikiActive}
+                isVrednikiActive={isVrednikiActive}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+                setBlock={setBlock}
+                setPersons={setPersons}
+                setDepartments={setDepartments}
+                userFullName={userFullName}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            />
+            <main className='main'>
+                <Filter
                     reducedDays={reducedDays}
                     setReducedDays={setReducedDays}
-                    additionalWork={additionalWork}
-                    setAdditionalWork={setAdditionalWork}
+                    isStrict={isStrict}
+                    setIsStrict={setIsStrict}
                     additionalRest={additionalRest}
-                    setAdditionalRest={setAdditionalRest}
-                    modalActive={modalActive}
+                    additionalWork={additionalWork}
                     setModalActive={setModalActive}
+                    modalActive={modalActive}
+                    excludedDate={excludedDate}
+                    setExcludedDate={setExcludedDate}
+                    startDate={startDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
+                    endDate={endDate}
+                    persons={persons}
+                    departments={departments}
+                    reqList={reqList}
+                    setReqList={setReqList}
                 />
-                <Header
-                    setBlock={setBlock}
-                    setPersons={setPersons}
-                    setDepartments={setDepartments}
-                    userFullName={userFullName}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                />
-                <main className='main'>
-                    <Filter
-                        reducedDays={reducedDays}
-                        setReducedDays={setReducedDays}
-                        isStrict={isStrict}
-                        setIsStrict={setIsStrict}
-                        additionalRest={additionalRest}
-                        additionalWork={additionalWork}
-                        setModalActive={setModalActive}
-                        modalActive={modalActive}
-                        excludedDate={excludedDate}
-                        setExcludedDate={setExcludedDate}
-                        startDate={startDate}
-                        setStartDate={setStartDate}
-                        setEndDate={setEndDate}
-                        endDate={endDate}
-                        persons={persons}
-                        departments={departments}
-                        reqList={reqList}
-                        setReqList={setReqList}
-                    />
-                    <div className='table__container'>
-                        <Table striped bordered hover>
-                            <thead>
-                            <tr>
-                                <th className="name">Фамилия</th>
-                                <th className="surName">Имя</th>
-                                <th className="patronymic">Отчество</th>
-                                <th className="department">Отдел</th>
-                                <th className="checkBox">
-                                    <Form.Check
-                                        type="checkbox"
-                                        checked={reqList.length === persons.length}
-                                        onChange={() => {
-                                            if (reqList.length === persons.length) {
-                                                // Снимаем выделение со всех
-                                                setReqList([]);
-                                            } else {
-                                                // Выделяем всех
-                                                setReqList(persons.map(person => person.ID));
-                                            }
-                                        }}
-                                    />
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {searchedPosts.map((employee, index) => {
-                                let isChef = false
-                                let isZam = false
-                                if (employee.job === 'начальник') isChef = true
-                                if (employee.job === 'заместитель') isZam = true
-                                return (
-                                    <tr key={index}>
-                                        <td className={isChef ? 'fat' : isZam ? 'fatGray' : ''}>{employee.SurName}</td>
-                                        <td className={isChef ? 'fat' : isZam ? 'fatGray' : ''}>{employee.Name}</td>
-                                        <td className={isChef ? 'fat' : isZam ? 'fatGray' : ''}>{employee.Patronymic}</td>
-                                        <td className={isChef ? 'fat' : isZam ? 'fatGray' : ''}>{employee.Department}</td>
-                                        <td>
-                                            <Form.Check
-                                                type="checkbox"
-                                                checked={reqList.includes(employee.ID)}
-                                                onChange={() => {
-                                                    setReqList(prev => {
-                                                        // Если сотрудник уже выбран - убираем его
-                                                        if (prev.includes(employee.ID)) {
-                                                            return prev.filter(id => id !== employee.ID);
-                                                        }
-                                                        // Если не выбран - добавляем
-                                                        else {
-                                                            return [...prev, employee.ID];
-                                                        }
-                                                    });
-                                                }}
-                                            />
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                            </tbody>
-                        </Table>
-                    </div>
-                </main>
-            </div>
+                <div className='table__container'>
+                    <Table striped bordered hover>
+                        <thead>
+                        <tr>
+                            <th className="name">Фамилия</th>
+                            <th className="surName">Имя</th>
+                            <th className="patronymic">Отчество</th>
+                            <th className="department">Отдел</th>
+                            <th className="checkBox">
+                                <Form.Check
+                                    type="checkbox"
+                                    checked={reqList.length === persons.length}
+                                    onChange={() => {
+                                        if (reqList.length === persons.length) {
+                                            // Снимаем выделение со всех
+                                            setReqList([]);
+                                        } else {
+                                            // Выделяем всех
+                                            setReqList(persons.map(person => person.ID));
+                                        }
+                                    }}
+                                />
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {searchedPosts.map((employee, index) => {
+                            let isChef = false
+                            let isZam = false
+                            if (employee.job === 'начальник') isChef = true
+                            if (employee.job === 'заместитель') isZam = true
+                            return (
+                                <tr key={index}>
+                                    <td className={isChef ? 'fat' : isZam ? 'fatGray' : ''}>{employee.SurName}</td>
+                                    <td className={isChef ? 'fat' : isZam ? 'fatGray' : ''}>{employee.Name}</td>
+                                    <td className={isChef ? 'fat' : isZam ? 'fatGray' : ''}>{employee.Patronymic}</td>
+                                    <td className={isChef ? 'fat' : isZam ? 'fatGray' : ''}>{employee.Department}</td>
+                                    <td>
+                                        <Form.Check
+                                            type="checkbox"
+                                            checked={reqList.includes(employee.ID)}
+                                            onChange={() => {
+                                                setReqList(prev => {
+                                                    // Если сотрудник уже выбран - убираем его
+                                                    if (prev.includes(employee.ID)) {
+                                                        return prev.filter(id => id !== employee.ID);
+                                                    }
+                                                    // Если не выбран - добавляем
+                                                    else {
+                                                        return [...prev, employee.ID];
+                                                    }
+                                                });
+                                            }}
+                                        />
+                                    </td>
+                                </tr>
+                            )
+                        })}
+                        </tbody>
+                    </Table>
+                </div>
+            </main>
+        </div>
     );
 }
 
