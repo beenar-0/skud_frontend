@@ -7,12 +7,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Filter from "./components/Filter/Filter";
 import AdditionalDay from "./components/AdditionalDay/AdditionalDay";
 import Login from "./components/Login/Login";
-import CalendarPage from "./components/CalendarForm/CalendarForm";
+import JournalPage from "./components/Journal/Journal";
 
 
 function App() {
+    const [privileges, setPrivileges] = useState({})
     const [currentPage, setCurrentPage] = useState('login')
-    const [isVrednikiActive, setIsVrednikiActive] = useState(false)
     const [userFullName, setUserFullName] = useState({name: '', surname: '', patronymic: ''})
     const [username, setUsername] = useState('')
     const [reqList, setReqList] = useState([])
@@ -22,14 +22,17 @@ function App() {
     const [departments, setDepartments] = useState([])
     useEffect(() => {
         if (!block) {
-            setCurrentPage('main')
-            postService.getPersons(userFullName, username)
-                .then((res) => {
-                    setPersons(res.data.persons);
-                    setDepartments(res.data.departments)
-                });
+            if (privileges.isAdmin || privileges.isHeadOfDepartment) {
+                setCurrentPage('main')
+                postService.getPersons(userFullName, username)
+                    .then((res) => {
+                        setPersons(res.data.persons);
+                        setDepartments(res.data.departments)
+                    });
+            }
+            if (!privileges.isAdmin && !privileges.isHeadOfDepartment && privileges.isJournalAdmin) setCurrentPage('journal')
         }
-    }, [block]);
+    }, [block, privileges]);
     const [startDate, setStartDate] = useState(Date.now());
     const [excludedDate, setExcludedDate] = useState([])
     const [endDate, setEndDate] = useState(Date.now());
@@ -65,19 +68,20 @@ function App() {
     return (
         block && currentPage === 'login' &&
         <Login
+            privileges={privileges}
+            setPrivileges={setPrivileges}
             username={username}
             setUsername={setUsername}
             setUserFullName={setUserFullName}
             userFullName={userFullName}
             block={block}
             setBlock={setBlock}
-            setIsVrednikiActive={setIsVrednikiActive}
         ></Login> ||
-        currentPage === 'vredniki' &&
+        currentPage === 'journal' &&
         <>
             <Header
-                setIsVrednikiActive={setIsVrednikiActive}
-                isVrednikiActive={isVrednikiActive}
+                privileges={privileges}
+                setPrivileges={setPrivileges}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
                 setBlock={setBlock}
@@ -88,7 +92,9 @@ function App() {
                 setSearchQuery={setSearchQuery}
             >
             </Header>
-            <CalendarPage></CalendarPage>
+            <JournalPage
+            privileges={privileges}
+            ></JournalPage>
         </> ||
         currentPage === 'main' &&
         <div className={modalActive.isActive ? "App _modalActive" : "App"}>
@@ -103,8 +109,8 @@ function App() {
                 setModalActive={setModalActive}
             />
             <Header
-                setIsVrednikiActive={setIsVrednikiActive}
-                isVrednikiActive={isVrednikiActive}
+                privileges={privileges}
+                setPrivileges={setPrivileges}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
                 setBlock={setBlock}

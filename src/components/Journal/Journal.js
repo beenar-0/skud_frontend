@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import classes from "./CalendarForm.module.css";
+import classes from "./Journal.module.css";
 import PostService from "../../API/postService";
 import Spinner from 'react-bootstrap/Spinner';
 
-const CalendarPage = () => {
+const JournalPage = ({privileges}) => {
     const [saveMsg, setSaveMsg] = useState('')
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -26,6 +25,7 @@ const CalendarPage = () => {
         try {
             // Загружаем список сотрудников
             const employeesResponse = await PostService.get_vredniki();
+            console.log(employeesResponse)
             const employeesData = employeesResponse.data.recordset.map(employee => ({
                 id: employee.ID,
                 name: employee.FullName,
@@ -70,7 +70,7 @@ const CalendarPage = () => {
             setEmployees(employeesData);
             setResultData(initialData);
         } catch (error) {
-            console.error("Ошибка при загрузке данных:", error);
+            console.log("Ошибка при загрузке данных:", error);
         } finally {
 
         }
@@ -220,6 +220,11 @@ const CalendarPage = () => {
         }
     };
 
+    function convertName(fullName){
+        const [surname, name, patronymic]= fullName.split(/\s+/)
+        return `${surname} ${name[0]}.${patronymic[0]}.`
+    }
+
     if (isLoading) {
         return (
             <div className={classes.spinnerContainer}>
@@ -273,7 +278,9 @@ const CalendarPage = () => {
 
                 {employees.map((employee, empIndex) => (
                     <div key={empIndex} className={classes.dataRow}>
-                        <div className={classes.nameCell}>{employee.name}</div>
+                        <div className={classes.nameCell}>
+                            {convertName(employee.name)}
+                        </div>
                         {datesArray.map((dateObj, dateIndex) => (
                             <div key={dateIndex} className={classes.inputCell}>
                                 <input
@@ -293,4 +300,4 @@ const CalendarPage = () => {
     );
 };
 
-export default CalendarPage;
+export default JournalPage;

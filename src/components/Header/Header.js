@@ -5,6 +5,7 @@ import Pepa from "../Pepa/Pepa";
 
 
 const Header = ({
+                    privileges,
                     searchQuery,
                     setSearchQuery,
                     userFullName,
@@ -13,8 +14,6 @@ const Header = ({
                     setBlock,
                     setCurrentPage,
                     currentPage,
-                    isVrednikiActive,
-                    setIsVrednikiActive
                 }) => {
     return (
         <header className={classes.header}>
@@ -32,20 +31,20 @@ const Header = ({
             <Pepa></Pepa>
             <nav className={classes.navContainer}>
                 <div
-                    className={currentPage === 'main' ? [classes.navbarItem, classes.Active].join(' ') : classes.navbarItem}
+                    className={!privileges.isAdmin && !privileges.isHeadOfDepartment ? [classes.navbarItem, classes.Locked].join(' ') : currentPage === 'main' ? [classes.navbarItem, classes.Active].join(' ') : classes.navbarItem}
                     onClick={() => {
-                        setCurrentPage('main')
+                        if (privileges.isAdmin || privileges.isHeadOfDepartment) setCurrentPage('main')
                     }}
                 >
-                    Посещаемость
+                    {privileges.isHeadOfDepartment || privileges.isAdmin ? 'Посещаемость' : <>Посещаемость<span className={classes.lock}></span></>}
                 </div>
                 <div
-                    className={!isVrednikiActive ? [classes.navbarItem, classes.Locked].join(' ') : currentPage === 'vredniki' ? [classes.navbarItem, classes.Active].join(' ') : classes.navbarItem}
+                    className={!privileges.isAdmin && !privileges.isJournalAdmin ? [classes.navbarItem, classes.Locked].join(' ') : currentPage === 'journal' ? [classes.navbarItem, classes.Active].join(' ') : classes.navbarItem}
                     onClick={() => {
-                        if (isVrednikiActive) setCurrentPage('vredniki')
+                        if (privileges.isAdmin || privileges.isJournalAdmin) setCurrentPage('journal')
                     }}
                 >
-                    {isVrednikiActive ? 'Вредники' : <>Вредники<span className={classes.lock}></span></> }
+                    {privileges.isJournalAdmin || privileges.isAdmin ? 'Вредники' : <>Вредники<span className={classes.lock}></span></>}
                 </div>
             </nav>
             <Search
@@ -59,7 +58,6 @@ const Header = ({
             <div
                 className={classes.exitBtn}
                 onClick={() => {
-                    setIsVrednikiActive()
                     setCurrentPage('login')
                     setPersons([])
                     setDepartments([])
