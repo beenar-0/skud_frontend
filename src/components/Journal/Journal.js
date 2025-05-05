@@ -225,6 +225,13 @@ const JournalPage = ({privileges}) => {
         return `${surname} ${name[0]}.${patronymic[0]}.`
     }
 
+    const calculateRowSum = (dates) => {
+        return Object.values(dates).reduce((sum, value) => {
+            const num = parseInt(value, 10);
+            return sum + (isNaN(num) ? 0 : num)
+        }, 0);
+    };
+
     if (isLoading) {
         return (
             <div className={classes.spinnerContainer}>
@@ -274,6 +281,7 @@ const JournalPage = ({privileges}) => {
                     {datesArray.map((dateObj, index) => (
                         <div key={index} className={classes.dateCell}>{dateObj.displayDate}</div>
                     ))}
+                    <div className={classes.summaryTitle}>Итого</div>
                 </div>
 
                 {employees.map((employee, empIndex) => (
@@ -293,6 +301,9 @@ const JournalPage = ({privileges}) => {
                                 />
                             </div>
                         ))}
+                        <div className={classes.summary}>
+                            {calculateRowSum(employee.dates)}
+                        </div>
                     </div>
                 ))}
             </div>

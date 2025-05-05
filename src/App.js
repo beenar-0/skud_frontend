@@ -122,6 +122,7 @@ function App() {
             />
             <main className='main'>
                 <Filter
+                    userFullName={userFullName}
                     reducedDays={reducedDays}
                     setReducedDays={setReducedDays}
                     isStrict={isStrict}

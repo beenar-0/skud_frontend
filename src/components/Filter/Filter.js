@@ -9,6 +9,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 const Filter = ({
+                    userFullName,
                     reducedDays,
                     setReducedDays,
                     isStrict,
@@ -55,6 +56,7 @@ const Filter = ({
                 .map(person => person.DepartmentID)
         )];
         const query = {
+            userFullName: userFullName,
             startDate: {
                 day: new Date(startDate).getDate().toString().padStart(2, '0'),
                 month: (new Date(startDate).getMonth() + 1).toString().padStart(2, '0'),
@@ -70,7 +72,7 @@ const Filter = ({
             reqDepartments: [...reqDepartments],
             additionalWork: [...additionalWorkDates],
             additionalRest: [...additionalRestDates],
-            reducedDays:[...reducedDays],
+            reducedDays: [...reducedDays],
             isStrict: isStrict
         }
         await postService.get_recap(query)
